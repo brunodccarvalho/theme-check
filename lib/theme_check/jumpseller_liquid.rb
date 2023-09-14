@@ -111,9 +111,9 @@ module ThemeCheck
       def self.theme_variables
         @theme_variables ||= {
           'content' => %w[layout],
-          'index_for_top_components' => ThemeBlock::BLOCKS.without('layout'),
-          'index_for_components' => ThemeBlock::BLOCKS.without('layout'),
-          'index_for_bottom_components' => ThemeBlock::BLOCKS.without('layout')
+          'index_for_top_components' => Template.templates,
+          'index_for_components' => Template.templates,
+          'index_for_bottom_components' => Template.templates
         }.freeze
       end
 
@@ -121,30 +121,32 @@ module ThemeCheck
         @variable_templates ||= {
           'bought_together' => %w[product],
           'category' => %w[category],
-          'checkout_form' => Template::CHECKOUT_BLOCKS,
+          'checkout_form' => Template.checkout_blocks,
           'content' => %w[layout],
-          'coupon_form' => Template::CHECKOUT_BLOCKS,
+          'coupon_form' => Template.checkout_blocks,
           'customer_address_form' => %w[customer__address],
           'customer_reset_password_form' => %w[customer__reset_password checkout__success],
           'error' => %w[error],
-          'estimate_form' => Template::CHECKOUT_BLOCKS,
+          'estimate_form' => Template.checkout_blocks,
           'filters' => %w[category searchresults],
-          'index_for_top_components' => Template::TEMPLATES,
-          'index_for_components' => Template::TEMPLATES,
-          'index_for_bottom_components' => Template::TEMPLATES,
+          'index_for_top_components' => Template.templates,
+          'index_for_components' => Template.templates,
+          'index_for_bottom_components' => Template.templates,
           'page' => %w[page],
           'product' => %w[product],
           'recommended' => %w[product],
-          'show_shipping_estimates' => Template::CHECKOUT_BLOCKS,
-          'template' => Template::BLOCKS
+          'show_shipping_estimates' => Template.checkout_blocks,
+          'template' => Template.blocks
         }.freeze
       end
 
       def self.template_variables
-        @template_variables ||= variable_templates
-          .each_with_object(Template::blocks.each_with_object({}) { |code, hash| hash[code] = [] }) do |(variable, blocks), map|
+        @template_variables ||= begin
+          stub = Template::blocks.each_with_object({}) { |code, hash| hash[code] = [] }
+          variable_templates.each_with_object(stub) do |(variable, blocks), map|
             blocks.each { |block| map[block].push(variable) }
           end
+        end
       end
     end
   end
