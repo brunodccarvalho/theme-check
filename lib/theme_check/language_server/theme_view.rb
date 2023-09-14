@@ -9,7 +9,6 @@ module ThemeCheck
         @root = workspace.root.join(relative_folder)
         @folder = Pathname.new(relative_folder)
         @workspace = workspace
-        @files_access_count = 0
       end
 
       def path(relative_path)
@@ -47,8 +46,6 @@ module ThemeCheck
       # Warning: not memoized, could pose a performance issue on large workspaces
       # if accessed many times in a single lint run.
       def files
-        @files_access_count += 1
-        IOMessenger.log("ThemeView.files accessed #{@files_access_count}x") if @files_access_count >= 5
         @workspace.filter_files(@folder, @workspace.files)
       end
 

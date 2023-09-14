@@ -83,7 +83,6 @@ module ThemeCheck
         return unless folder
         return if conflicting_theme_root?(folder)
 
-        IOMessenger.log("Adding theme folder '#{folder}'")
         add_theme_files(folder)
         @themes.add(relative_path(folder))
       end
