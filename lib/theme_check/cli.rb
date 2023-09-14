@@ -188,8 +188,8 @@ module ThemeCheck
     def check(out_stream = STDOUT)
       update_docs
 
-      STDERR.puts "Checking #{@config.root} ..."
-      storage = ThemeCheck::FileSystemStorage.new(@config.root, ignored_patterns: @config.ignored_patterns)
+      STDERR.puts "Checking #{@path} ..."
+      storage = ThemeCheck::FileSystemStorage.new(@path, ignored_patterns: @config.ignored_patterns)
       theme = ThemeCheck::Theme.new(storage)
       if theme.all.empty?
         raise Abort, "No theme files found."
