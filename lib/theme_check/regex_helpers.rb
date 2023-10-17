@@ -8,6 +8,10 @@ module ThemeCheck
     HTML_LIQUID_PLACEHOLDER = /≬[0-9a-z\n]+[#\n]*≬/m
     START_OR_END_QUOTE = /(^['"])|(['"]$)/
 
+    def no_liquid?(s)
+      !s.match?(LIQUID_TAG_OR_VARIABLE)
+    end
+
     def matches(s, re)
       start_at = 0
       matches = []

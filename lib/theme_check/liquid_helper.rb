@@ -2,6 +2,20 @@
 
 module ThemeCheck
   module LiquidHelper
+    LIQUID_WORD = %r{[[:alnum:]_]+}
+    VARIABLE_LOOKUP_LOOKUP = /\.(#{LIQUID_WORD})\b|\['(#{LIQUID_WORD})'\]|\["(#{LIQUID_WORD})"\]/o
+    VARIABLE_LOOKUP_REGEX = /\b(?<![.-])#{LIQUID_WORD}(?:\.(#{LIQUID_WORD})\b|\['(#{LIQUID_WORD})'\]|\["(#{LIQUID_WORD})"\])*\b/o
+
+    def self.simple_variable_lookup_prefix_regex(prefix)
+      /\b(?<![.-])#{prefix}/
+    end
+
+    def visit_liquid_variable_lookups(markup)
+      markup.scan(VARIABLE_LOOKUP_REGEX).each do |match|
+        yield match, Liquid::VariableLookup.new(match[0])
+      end
+    end
+
     def recover_variable_markup(variable_lookup)
       variable_lookup.name + recover_lookups_markup(variable_lookup.lookups)
     end

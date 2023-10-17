@@ -143,3 +143,40 @@ RefactorIfToCase:
   ignore: []
   min_conditions: 3
   min_branches: 2
+
+NestedCapture:
+  enabled: true
+  ignore: []
+
+LiquidInJavascript:
+  enabled: true
+  ignore: []
+
+EscapeLiquidInsideAttribute:
+  enabled: true
+  attributes: []
+  ignore: []
+
+ExternalAssetInTemplate:
+  enabled: true
+  ignore: []
+
+ExternalAssetIntegrity:
+  enabled: true
+  algorithm: 'sha256'
+  whitelist_patterns: []
+  ignore: []
+
+ExternalAssetExists:
+  enabled: true
+  whitelist_patterns: []
+  ignore: []
+
+StripLiquidInTextHtml:
+  enabled: true
+  elements: []
+  ignore: []
+
+TrivialCapture:
+  enabled: true
+  ignore: []

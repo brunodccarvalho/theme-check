@@ -29,9 +29,7 @@ module ThemeCheck
         asset = @theme["assets/#{asset_id}"]
         return unless asset.is_a?(AssetFile)
         asset.gzipped_size
-
-      # remote URLs
-      elsif href =~ %r{^(https?:)?//}
+      elsif href =~ %r{^(https?:)?//} && no_liquid?(href)
         asset = RemoteAssetFile.from_src(href)
         asset.gzipped_size
       end
