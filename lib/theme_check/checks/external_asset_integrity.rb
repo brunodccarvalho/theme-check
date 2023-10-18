@@ -82,7 +82,7 @@ module ThemeCheck
     end
 
     def remove_attribute(markup, attribute)
-      markup.sub(/\s*\b#{Regexp.escape(attribute)}=(?:["][^"]+["]|['][^']+['])\s*/, ' ').sub(/^<\s+/, '').sub(/\s+>$/, '')
+      markup.sub(/\s*\b#{Regexp.escape(attribute)}=(?:["][^"]+["]|['][^']+['])\s*/, ' ').sub(/^<\s+/, '<').sub(/\s+>$/, '>')
     end
   end
 end

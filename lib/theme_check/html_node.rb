@@ -51,6 +51,10 @@ module ThemeCheck
       @markup ||= replace_placeholders(parseable_markup)
     end
 
+    def markup=(markup)
+      @markup = markup
+    end
+
     def line_number
       @value.line
     end
