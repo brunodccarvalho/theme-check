@@ -145,7 +145,7 @@ RefactorIfToCase:
   min_branches: 2
 
 NestedCapture:
-  enabled: true
+  enabled: false
   ignore: []
 
 LiquidInJavascript:
