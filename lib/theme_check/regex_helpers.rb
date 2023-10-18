@@ -7,6 +7,10 @@ module ThemeCheck
     LIQUID_TAG_OR_VARIABLE = /#{LIQUID_TAG}|#{LIQUID_VARIABLE}/om
     HTML_LIQUID_PLACEHOLDER = /≬[0-9a-z\n]+[#\n]*≬/m
     START_OR_END_QUOTE = /(^['"])|(['"]$)/
+    LIQUID_SINGLE_MARKUP = /(?:[^\%\}]|[\%\}](?!\}))*/om
+    LIQUID_SINGLE_TAG = /#{Liquid::TagStart}#{LIQUID_SINGLE_MARKUP}#{Liquid::TagEnd}/om
+    LIQUID_SINGLE_VARIABLE = /#{Liquid::VariableStart}#{LIQUID_SINGLE_MARKUP}#{Liquid::VariableEnd}/om
+    LIQUID_SINGLE_CONSTRUCT = /#{LIQUID_SINGLE_TAG}|#{LIQUID_SINGLE_VARIABLE}/om
 
     def no_liquid?(s)
       !s.match?(LIQUID_TAG_OR_VARIABLE)

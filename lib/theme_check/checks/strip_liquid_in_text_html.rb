@@ -7,8 +7,8 @@ module ThemeCheck
     category :html
     doc docs_url(__FILE__)
 
-    LEFT_LIQUID = /^\s+(#{LIQUID_TAG_OR_VARIABLE})/mo
-    RIGHT_LIQUID = /(#{LIQUID_TAG_OR_VARIABLE})\s+$/mo
+    LEFT_LIQUID = /\A\s+(#{LIQUID_SINGLE_CONSTRUCT})/om
+    RIGHT_LIQUID = /(#{LIQUID_SINGLE_CONSTRUCT})\s+\z/om
     DEFAULT_ELEMENTS = %w[h1 h2 h3 h4 h5 h6 span small p b strong i em a q blockquote code pre ul ol li].freeze
 
     def initialize(elements: [])
@@ -24,7 +24,7 @@ module ThemeCheck
     private
 
     def lint_text_node_left(node)
-      return unless (match = node.value.match(LEFT_LIQUID))
+      return unless (match = node.markup.match(LEFT_LIQUID))
       return if match[1].start_with?("{%-") || match[1].start_with?("{{-")
 
       add_offense("Left strip liquid as html text",
@@ -32,13 +32,13 @@ module ThemeCheck
         ms = node.markup.scan(match[1])
         next unless ms.size == 1
 
-        escaped_match = match[1].sub(/^{{-/, '{{-').sub(/^{%-/, '{%-')
-        corrector.replace(node, node.markup.sub(match[0], escaped_match))
+        escaped_match = match[1].sub(/\A{{/, '{{-').sub(/\A{%/, '{%-')
+        corrector.replace(node, node.markup.sub(match[1], escaped_match))
       end
     end
 
     def lint_text_node_right(node)
-      return unless (match = node.value.match(RIGHT_LIQUID))
+      return unless (match = node.markup.match(RIGHT_LIQUID))
       return if match[1].end_with?("-%}") || match[1].end_with?("-}}")
 
       add_offense("Right strip liquid as html text",
@@ -46,7 +46,7 @@ module ThemeCheck
         ms = node.markup.scan(match[1])
         next unless ms.size == 1
 
-        escaped_match = match[1].sub(/-}}$/, '-}}').sub(/-%}$/, '-%}')
+        escaped_match = match[1].sub(/}}\z/, '-}}').sub(/%}\z/, '-%}')
         corrector.replace(node, node.markup.sub(match[1], escaped_match))
       end
     end
