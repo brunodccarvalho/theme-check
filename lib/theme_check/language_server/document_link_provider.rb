@@ -57,7 +57,7 @@ module ThemeCheck
 
           partial = match[:partial]
           partial = destination_directory + '/' + partial if non_empty_string?(destination_directory)
-          partial = partial + destination_postfix if non_empty_string?(destination_postfix)
+          partial += destination_postfix if non_empty_string?(destination_postfix)
           partial = find_variation(partial, storage)
           next unless partial
 

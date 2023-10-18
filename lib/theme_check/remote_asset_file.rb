@@ -21,7 +21,7 @@ module ThemeCheck
 
       def visit_src(src)
         asset = from_src(src)
-        asset && asset.ok ? yield(asset) : false
+        asset&.ok ? yield(asset) : false
       end
 
       def uri(src)

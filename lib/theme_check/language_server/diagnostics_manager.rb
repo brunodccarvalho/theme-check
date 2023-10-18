@@ -42,7 +42,7 @@ module ThemeCheck
           current_diagnostics = offenses
             .select(&:theme_file)
             .group_by(&:theme_file)
-            .transform_keys { |theme_file| theme_file.workspace_path }
+            .transform_keys(&:workspace_path)
             .transform_values do |theme_file_offenses|
               theme_file_offenses.map { |o| Diagnostic.new(o) }
             end

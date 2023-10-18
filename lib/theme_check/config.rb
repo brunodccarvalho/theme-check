@@ -80,7 +80,7 @@ module ThemeCheck
         load_config(":default")
       end
 
-      def is_theme_folder?(absolute_path)
+      def theme_folder?(absolute_path)
         absolute_pathname = Pathname.new(absolute_path)
         absolute_pathname.join(DOTFILE).file? &&
           absolute_pathname.join('templates').directory? &&

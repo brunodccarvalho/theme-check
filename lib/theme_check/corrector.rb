@@ -22,7 +22,7 @@ module ThemeCheck
 
     def replace(node, content, character_range = nil)
       @theme_file.rewriter.replace(node, content, character_range)
-      node.markup = content
+      node.markup = content if node.respond_to?(:markup)
     end
 
     def replace_inner_markup(node, content)

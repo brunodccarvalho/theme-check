@@ -46,7 +46,7 @@ module ThemeCheck
 
       RemoteAssetFile.visit_src(src) do |asset|
         integrities = content_integrities(asset.content)
-        return if integrities.value?(node.attributes["integrity"]) && node.attributes["crossorigin"] == "anonymous"
+        next if integrities.value?(node.attributes["integrity"]) && node.attributes["crossorigin"] == "anonymous"
 
         add_offense('Add or replace integrity/crossorigin attributes', node: node) do |corrector|
           integrity = integrities[@algorithm]
@@ -77,7 +77,7 @@ module ThemeCheck
       {
         sha256: 'sha256-' + Base64.strict_encode64(Digest::SHA256.digest(content)),
         sha384: 'sha384-' + Base64.strict_encode64(Digest::SHA384.digest(content)),
-        sha512: 'sha512-' + Base64.strict_encode64(Digest::SHA512.digest(content))
+        sha512: 'sha512-' + Base64.strict_encode64(Digest::SHA512.digest(content)),
       }
     end
 

@@ -6,7 +6,7 @@ module ThemeCheck
     category :liquid
     doc docs_url(__FILE__)
 
-    def on_document(node)
+    def on_document(_node)
       @stack_counter = 0
     end
 
@@ -19,11 +19,11 @@ module ThemeCheck
       @stack_counter += 1
     end
 
-    def after_capture(node)
+    def after_capture(_node)
       @stack_counter -= 1
     end
 
-    def after_document(node)
+    def after_document(_node)
       @stack_counter = 0
     end
   end

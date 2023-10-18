@@ -135,17 +135,15 @@ module ThemeCheck
       end
 
       def on_text_document_did_close(_id, params, workspace_path)
-        begin
-          file_system_content = Pathname.new(text_document_uri(params)).read(mode: 'rb', encoding: 'UTF-8')
-          # On close, the file system becomes the source of truth
-          @storage.write(workspace_path, file_system_content, nil)
+        file_system_content = Pathname.new(text_document_uri(params)).read(mode: 'rb', encoding: 'UTF-8')
+        # On close, the file system becomes the source of truth
+        @storage.write(workspace_path, file_system_content, nil)
 
-        # the file no longer exists because either the user deleted it, or the user renamed it.
-        rescue Errno::ENOENT
-          @storage.remove(workspace_path)
-        ensure
-          @diagnostics_engine.clear_diagnostics(workspace_path) if @configuration.only_single_file?
-        end
+      # the file no longer exists because either the user deleted it, or the user renamed it.
+      rescue Errno::ENOENT
+        @storage.remove(workspace_path)
+      ensure
+        @diagnostics_engine.clear_diagnostics(workspace_path) if @configuration.only_single_file?
       end
 
       def on_text_document_did_save(_id, params, workspace_path)
@@ -153,7 +151,7 @@ module ThemeCheck
         analyze_and_send_offenses(text_document_uri(params), reset: new_theme) if @configuration.check_on_save?
       end
 
-      def on_text_document_document_link(id, params, workspace_path)
+      def on_text_document_document_link(id, _params, workspace_path)
         return @bridge.send_response(id, []) unless @storage.find_theme(workspace_path)
 
         @bridge.send_response(id, @document_link_engine.document_links(workspace_path))

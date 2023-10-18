@@ -10,7 +10,7 @@ module ThemeCheck
       @unused = {}
     end
 
-    def on_document(node)
+    def on_document(_node)
       @unused.clear
       @used_include_tag = false
     end
@@ -27,11 +27,11 @@ module ThemeCheck
       @unused.delete(node.value.name)
     end
 
-    def on_include(node)
+    def on_include(_node)
       @used_include_tag = true
     end
 
-    def after_document(node)
+    def after_document(_node)
       return if @used_include_tag
 
       @unused.each do |name, nodes|

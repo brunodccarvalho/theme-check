@@ -73,7 +73,7 @@ module ThemeCheck
       end
 
       def debugging
-        hash = { }
+        hash = {}
         files.each do |file|
           hash[workspace_path(file)] = "#{read(file)&.size || '?'}c, #{version(file)}v"
         end

@@ -2,7 +2,7 @@
 
 module ThemeCheck
   module LiquidHelper
-    LIQUID_WORD = %r{[[:alnum:]_]+}
+    LIQUID_WORD = /[[:alnum:]_]+/
     VARIABLE_LOOKUP_LOOKUP = /\.(#{LIQUID_WORD})\b|\['(#{LIQUID_WORD})'\]|\["(#{LIQUID_WORD})"\]/o
     VARIABLE_LOOKUP_REGEX = /\b(?<![.-])#{LIQUID_WORD}(?:\.(#{LIQUID_WORD})\b|\['(#{LIQUID_WORD})'\]|\["(#{LIQUID_WORD})"\])*\b/o
 

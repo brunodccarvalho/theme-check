@@ -93,7 +93,7 @@ module ThemeCheck
       ensure
         send_response(id, nil, {
           code: ErrorCodes::INTERNAL_ERROR,
-          message: "A theme-check-language-server error has occurred, inspect OUTPUT logs for details."
+          message: "A theme-check-language-server error has occurred, inspect OUTPUT logs for details.",
         })
       end
 

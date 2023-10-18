@@ -5,7 +5,7 @@ module ThemeCheck
     class DocumentLinkEngine
       def initialize(workspace)
         @workspace = workspace
-        @providers = DocumentLinkProvider.all.map { |x| x.new }
+        @providers = DocumentLinkProvider.all.map(&:new)
       end
 
       def document_links(relative_path)

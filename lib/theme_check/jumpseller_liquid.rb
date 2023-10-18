@@ -38,7 +38,6 @@ module ThemeCheck
         ].freeze
       end
 
-
       def self.customer_blocks
         @customer_blocks ||= %w[
           customer__account
@@ -113,7 +112,7 @@ module ThemeCheck
           'content' => %w[layout],
           'index_for_top_components' => Template.templates,
           'index_for_components' => Template.templates,
-          'index_for_bottom_components' => Template.templates
+          'index_for_bottom_components' => Template.templates,
         }.freeze
       end
 
@@ -136,13 +135,13 @@ module ThemeCheck
           'product' => %w[product],
           'recommended' => %w[product],
           'show_shipping_estimates' => Template.checkout_blocks,
-          'template' => Template.blocks
+          'template' => Template.blocks,
         }.freeze
       end
 
       def self.template_variables
         @template_variables ||= begin
-          stub = Template::blocks.each_with_object({}) { |code, hash| hash[code] = [] }
+          stub = Template.blocks.each_with_object({}) { |code, hash| hash[code] = [] }
           variable_templates.each_with_object(stub) do |(variable, blocks), map|
             blocks.each { |block| map[block].push(variable) }
           end

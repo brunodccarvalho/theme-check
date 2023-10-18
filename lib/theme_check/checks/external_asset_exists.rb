@@ -34,7 +34,7 @@ module ThemeCheck
       return if !visitable_src?(src) || whitelisted?(src)
 
       asset = RemoteAssetFile.from_src(src)
-      add_offense('Failed to fetch external asset', node: node) unless asset && asset.ok
+      add_offense('Failed to fetch external asset', node: node) unless asset&.ok
     end
   end
 end

@@ -72,7 +72,7 @@ module ThemeCheck
 
       def ascend_to_theme_folder(absolute_path)
         Pathname.new(absolute_path).ascend do |path|
-          return path if ThemeCheck::Config.is_theme_folder?(path)
+          return path if ThemeCheck::Config.theme_folder?(path)
           # the config file can be outside the workspace, but not the theme folder
           break if path == @root
         end
