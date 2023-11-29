@@ -180,3 +180,7 @@ StripLiquidInTextHtml:
 TrivialCapture:
   enabled: true
   ignore: []
+
+StaticImgResizeWidthHeight:
+  enabled: true
+  ignore: []

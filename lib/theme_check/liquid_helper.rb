@@ -10,6 +10,15 @@ module ThemeCheck
       /\b(?<![.-])#{prefix}/
     end
 
+    def visit_single_liquid_variable(markup)
+      return nil unless markup.match?(RegexHelpers::LIQUID_VARIABLE)
+
+      root = Liquid::Template.parse(markup, error_mode: :strict).root
+      yield root.nodelist.first if root.nodelist.size == 1 && root.nodelist.all?(Liquid::Variable)
+    rescue Liquid::SyntaxError => e
+      nil
+    end
+
     def visit_liquid_variable_lookups(markup)
       markup.scan(VARIABLE_LOOKUP_REGEX).each do |match|
         yield match, Liquid::VariableLookup.new(match[0])
