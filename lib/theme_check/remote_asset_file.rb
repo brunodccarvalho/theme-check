@@ -70,7 +70,7 @@ module ThemeCheck
         http.request(req)
       end
       @success = @response.is_a?(Net::HTTPSuccess)
-    rescue OpenSSL::SSL::SSLError, Zlib::StreamError, *NET_HTTP_EXCEPTIONS
+    rescue OpenSSL::SSL::SSLError, Zlib::StreamError, *NET_HTTP_EXCEPTIONS, Timeout::Error
       @success = false
     end
 
