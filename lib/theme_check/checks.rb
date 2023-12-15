@@ -4,7 +4,7 @@ require "timeout"
 
 module ThemeCheck
   class Checks < Array
-    CHECK_METHOD_TIMEOUT = 5 # sec
+    CHECK_METHOD_TIMEOUT = 10 # sec
 
     def call(method, *args)
       each do |check|
