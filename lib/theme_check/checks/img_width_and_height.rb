@@ -8,6 +8,10 @@ module ThemeCheck
 
     ENDS_IN_CSS_UNIT = /(cm|mm|in|px|pt|pc|em|ex|ch|rem|vw|vh|vmin|vmax|%)$/i
 
+    def initialize(whitelist: [])
+      @whitelist = whitelist || []
+    end
+
     def on_img(node)
       width = node.attributes["width"]
       height = node.attributes["height"]
@@ -15,7 +19,8 @@ module ThemeCheck
       record_units_in_field_offenses("width", width, node: node)
       record_units_in_field_offenses("height", height, node: node)
 
-      return if node.attributes["src"].nil? || (width && height)
+      return if node.attributes["src"].nil? || (width && height) || @whitelist.any? { |word| node.value.include?(word) }
+
       missing_width = width.nil?
       missing_height = height.nil?
       error_message = if missing_width && missing_height

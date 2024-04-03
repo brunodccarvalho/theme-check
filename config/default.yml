@@ -101,6 +101,7 @@ AssetSizeCSS:
 ImgWidthAndHeight:
   enabled: true
   ignore: []
+  whitelist: []
 
 ImgLazyLoading:
   enabled: true
