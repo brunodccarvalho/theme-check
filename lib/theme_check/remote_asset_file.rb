@@ -6,6 +6,8 @@ module ThemeCheck
   class RemoteAssetFile
     include HttpHelpers
 
+    RETRY_LIMIT = 2
+
     class << self
       def cache
         @cache ||= {}
@@ -64,14 +66,22 @@ module ThemeCheck
     private
 
     def fetch!
-      @response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: ssl?) do |http|
-        req = Net::HTTP::Get.new(uri)
-        req['Accept-Encoding'] = 'gzip, deflate'
-        http.request(req)
-      end
-      @success = @response.is_a?(Net::HTTPSuccess)
-    rescue OpenSSL::SSL::SSLError, Zlib::StreamError, *NET_HTTP_EXCEPTIONS, Timeout::Error
+      retries = 0
       @success = false
+
+      begin
+        @response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: ssl?) do |http|
+          req = Net::HTTP::Get.new(uri)
+          req['Accept-Encoding'] = 'gzip, deflate'
+          http.request(req)
+        end
+        @success = @response.is_a?(Net::HTTPSuccess)
+      rescue Timeout::Error
+        retries += 1
+        retry if retries <= RETRY_LIMIT
+      rescue OpenSSL::SSL::SSLError, Zlib::StreamError, *NET_HTTP_EXCEPTIONS
+        @success = false
+      end
     end
 
     def ssl?
