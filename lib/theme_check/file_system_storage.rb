@@ -44,7 +44,7 @@ module ThemeCheck
     end
 
     def files
-      @file_array ||= glob("**/*")
+      @file_array ||= glob("**{,/*/**}/*") # https://stackoverflow.com/questions/357754/can-i-traverse-symlinked-directories-in-ruby-with-a-glob
         .reject { |path| File.directory?(path) }
         .map { |path| path.relative_path_from(@root).to_s }
     end
