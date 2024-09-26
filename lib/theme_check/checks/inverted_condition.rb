@@ -9,7 +9,7 @@ module ThemeCheck
     category :liquid
 
     def on_condition(node)
-      return unless inverted_condition?(node.value)
+      return unless inverted_condition?(node.value) && node.value.operator != 'contains'
 
       ancestor = non_condition_ancestor(node)
       condition_markup = recover_single_condition_markup(node.value)
