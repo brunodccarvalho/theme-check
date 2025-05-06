@@ -65,16 +65,26 @@ module ThemeCheck
       end
     end
 
+    class Style < Liquid::Block
+      NO_UNEXPECTED_ARGS = /\A\s*\z/
+
+      disable_tags 'render', 'include'
+
+      def initialize(tag_name, markup, parse_context)
+        super
+        ensure_valid_markup(tag_name, markup, parse_context)
+      end
+
+      def ensure_valid_markup(tag_name, markup, parse_context)
+        raise SyntaxError, parse_context.locale.t('errors.syntax.block_tag_unexpected_args', tag: tag_name) unless NO_UNEXPECTED_ARGS.match?(markup)
+      end
+    end
+
     class Render < Liquid::Tag
       SYNTAX = %r{
         (
           ## for {% render "snippet" %}
-          #{Liquid::QuotedString}+ |
-          ## for {% render block %}
-          ## We require the variable # segment to be at the beginning of the
-          ## string (with \A). This is to prevent code like {% render !foo! %}
-          ## from parsing
-          \A#{Liquid::VariableSegment}+
+          #{Liquid::QuotedString}+
         )
         ## for {% render "snippet" with product as p %}
         ## or {% render "snippet" for products p %}
@@ -125,16 +135,13 @@ module ThemeCheck
         @register_tags
       end
 
-      def register_tag(name, klass)
-        Liquid::Template.register_tag(name, klass)
-      end
-
       def register_tags!
         return if !register_tags? || (defined?(@registered_tags) && @registered_tags)
         @registered_tags = true
-        register_tag('render', Render)
-        register_tag('paginate', Paginate)
-        register_tag('t', Translate)
+        Liquid::Environment.default.register_tag('render', Render)
+        Liquid::Environment.default.register_tag('paginate', Paginate)
+        Liquid::Environment.default.register_tag('t', Translate)
+        Liquid::Environment.default.register_tag('style', Style)
       end
     end
     self.register_tags = true
