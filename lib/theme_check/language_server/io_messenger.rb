@@ -5,7 +5,7 @@ module ThemeCheck
     class IOMessenger < Messenger
       def self.err_stream
         if ThemeCheck.debug_log_file
-          File.open(ThemeCheck.debug_log_file, "w")
+          File.open(ThemeCheck.debug_log_file, "a")
         else
           STDERR
         end
