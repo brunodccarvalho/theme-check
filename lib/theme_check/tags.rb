@@ -80,6 +80,9 @@ module ThemeCheck
       end
     end
 
+    class ContentFor < Liquid::Tag
+    end
+
     class << self
       attr_writer :register_tags
 
@@ -93,6 +96,7 @@ module ThemeCheck
         Liquid::Environment.default.register_tag('paginate', Paginate)
         Liquid::Environment.default.register_tag('t', Translate)
         Liquid::Environment.default.register_tag('style', Style)
+        Liquid::Environment.default.register_tag('content_for', ContentFor)
       end
     end
     self.register_tags = true
